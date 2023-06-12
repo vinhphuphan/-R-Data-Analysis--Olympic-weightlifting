@@ -22,12 +22,12 @@ Women athletes are known to be less strong and powerful than equally trained men
 I quantified the impact of body weight and age and sex differences for weightlifters from the sample of 261 participants. The answer to the first question stated at the beginning of this study is that there is no difference between the average age of female and male weightlifters.
 
 <p align="center">
-  <img width="642" height="321" src="https://github.com/vinhphuphan/Olympic-Weightlifting-Data-Analysis/blob/main/male-female1.png">
+  <img width="642" height="321" src="https://github.com/vinhphuphan/Olympic-Weightlifting-Data-Analysis/blob/main/images/male-female1.png">
 </p>
 
 Besides that, there is a linear relationship between the body weight of the athletes and the maximum weight they can lift regardless the gender. Such results may help to establish progression trajectories for talented athletes and inform coaches, athletes, and national governing bodies.
 
 <p align="center" >
-  <img width="642" height="321" src="https://github.com/vinhphuphan/Olympic-Weightlifting-Data-Analysis/blob/main/relationship_female.png">
-  <img width="642" height="321" src="https://github.com/vinhphuphan/Olympic-Weightlifting-Data-Analysis/blob/main/relationship_male.png">
+  <img width="642" height="321" src="https://github.com/vinhphuphan/Olympic-Weightlifting-Data-Analysis/blob/main/images/relationship_female.png">
+  <img width="642" height="321" src="https://github.com/vinhphuphan/Olympic-Weightlifting-Data-Analysis/blob/main/images/relationship_male.png">
 </p>
