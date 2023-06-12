@@ -1,0 +1,273 @@
+---
+title: "Statistical Report"
+subtitle: "Phan Vinh Phu  \n StudentID : 45747989"
+output:
+  pdf_document: default
+  word_document: default
+  html_document:
+    df_print: paged
+urlcolor: blue
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', prompt = TRUE
+)
+
+library(knitr)
+knitr::opts_chunk$set(tidy=T, 
+               fig.width=10,
+               fig.height=5,
+               fig.align='left',
+               warning=FALSE,
+               message=FALSE,
+               echo=TRUE)
+options(width = 20)
+library(dplyr)
+library(ggplot2)
+library(psych)
+library(pastecs)
+attach(diamonds)
+
+```
+## Abstract
+Olympic weightlifting requires technical skills, explosive power, strength, and coordination. Weightlifters can be competitive within a range of morphological characteristics due to competition body weight classes. To date, no studies have examined when sex and age differences arise in weightlifting and the impact of body weight on performances at different ages.
+
+## Introduction
+Women athletes are known to be less strong and powerful than equally trained men. The main factor accounting for gender differences in maximal strength,indeed, has been identified as age. To the best of our knowledge, no studies to date have compared age of male and female athletes or the relation between body weight and the maximum weight athletes can lift. Therefore, the first aim of this study is to answer whether there is any difference in the average age of female and male weightlifters. Beside that, the second aim of the present study was to assess the relationships between the body weight of weightlifters and the weight lifted in sports with high expressions of strength and power. 
+
+## Methods
+A random sample of 261 weightlifters ($age = 28.5 \pm 5years$; $body weight = 97.54 \pm 14.7kg$; $weightlifted = 146.7 \pm 30.8kg$) have been collected. The sample includes information about weightlifters' gender, body weight, age, and the maximum weight they have lifted. The first research question is "Is there any difference in the average age of female and male weightlifters?". To answer this question, I apply the two independent sample t-test method. The test is only valid if we can reasonably assume that both samples are drawn from normal distributions. Therefore, the data is split by gender into two small samples. Then, the comparative box plot and the histogram are drawn to check the distribution of the age column filtered by gender.The participants in the present study were 129 women(Female: $age = 28.54 \pm 5.12years$ ) and 132 men (Female: $age = 28.44 \pm 4.86years$ ).
+
+The second research question is about the relationships between the body weight of weightlifters and the weight lifted in sports. For the second question, a scatter plot is used to determine the linear relation between two variables (bodyweight and Weightlifted). Secondly, I have chosen to use the hypothesis test for the linear relationship to test the relation between them. In this study, the sample will be split into two groups separated by gender. 
+
+
+\pagebreak
+
+
+## Result 1
+The following tables show information about variables in the sample dataset and descriptive statistics to give an overview.  
+
+```{r variable description, echo=FALSE}
+table1 <- data.frame(Variable = c('Id', 'Gender','BodyWeight','Age','Weightlifted'),
+                     Description  = c(' Subject ID ',
+                                       'Either ”female” or ”male”',
+                                      ' The weight of the subject ',
+                                       'The age of the subject in years',
+                                       'The maximum weight lifted by the subject in an unsepcified exercise'))
+
+kable(table1,
+      format='markdown',
+      digits=4,
+      caption = 'Variable Description')
+```
+
+
+
+```{r data first fiverows, echo=FALSE}
+data <- read.csv('data.StatReport.45747989.csv')
+
+kable(head(data, 5), 
+      format='markdown',
+      digits=4,
+      caption = "The First Five Rows of Sample")
+```
+
+```{r data summary, echo=FALSE}
+
+kable(summary(data), 
+      format='markdown',
+      digits=4,
+      caption = "Descriptive Statistics")
+
+```
+```{r descriptive statistics of two sample female and male, echo=FALSE}
+#split data
+data_split <- split(data, f = data$gender)
+female <- data.frame(data_split[1])
+male <- data.frame(data_split[2])
+
+# Descriptive Statistics
+n_female <- nrow(female) # female - sample size
+x_bar_female <- mean(female$female.age) #female - sample mean
+s_female <- sd(female$female.age) #female - sample standard deviation
+se_female <- s_female/sqrt(n_female) #female - estimated standard error
+
+n_male <- nrow(male) # male - sample size
+x_bar_male <- mean(male$male.age) #male - sample mean
+s_male <- sd(male$male.age) #male - sample standard deviation
+se_male <- s_male/sqrt(n_male) #male - estimated standard error
+
+sub_stat <- data.frame(Variable = c('Female', 'Male'),
+                          Count = c(n_female,n_male),
+                          Mean = c(x_bar_female,x_bar_male),
+                          StDev = c(s_female,s_male),
+                          StError = c(se_female,se_male))
+
+
+kable(sub_stat, 
+      format='markdown',
+      digits=4,
+      caption = "Descriptive Statistics of Two Samples Split By Gender")
+
+```
+
+```{r Comparative boxplot, echo = FALSE}
+
+bp <- ggplot(data, aes(gender, age)) + 
+  geom_boxplot(aes(fill = gender)) +
+  theme_minimal() +
+  theme(legend.position = "top") + ggtitle("The Age of Male and Female")
+bp
+```
+
+
+```{r split dataset, echo=FALSE}
+
+# Plot histogram
+par(mfrow=c(1,2))
+hist(female$female.age, 
+     main="Distribution of Female Age",
+     xlab="Age",
+     col="#98c1d9")
+hist(male$male.age,
+     main="Distribution of Male Age",
+     xlab="Age",
+     col="#98c1d9")
+```
+The comparative box plot illustrates that the means and ranges of the age of the two groups are mostly the same. In addition, the histograms show that the ages of female and male weightlifters were likely normally distributed. This allows us to establish the two independent sample t-tests. In this method, assumptions are stated about the average age of the two groups. The first assumption is that there is no difference between the age of female and male weight lifters. The alpha is obtained for the test to check the assumptions and achieve the result which is The first assumption will be rejected at an alpha level of p < 0.05. . On the contrary, there is not enough evidence to reject the first assumption when alpha p > 0.05. All analyses were performed using R, version 4.2.2.
+
+## Result 2
+
+### Research Question 1 : Is there any difference in the average age of female and male weightlifters?
+
+```{r the t statistic and p value, echo=FALSE}
+# The pooled standard deviation
+variance <- (((s_female*s_female)*128) + ((s_male*s_male)*131)) / (n_female+n_male-2)
+sp <- sqrt(variance)
+# t statistic
+t <- (x_bar_female - x_bar_male) / (sp*sqrt(1/n_female + 1/n_male))
+# df
+df <- n_female + n_male - 2
+# p value
+tailarea <- 1-pt(abs(t), df) #tail area from standard normal dist
+p <- 2*tailarea # doubling tail area, since it's a 2 tailed test
+cat("The test statistic is t = ", t, ' with df = ', df,'.The p-value is p = ', p,'.')
+
+```
+Since the p-value is greater than 0.05, there is insufficient evidence to suggest that the average age of female weightlifters and the age of male weightlifters are different. In other words, their average age could be the same. To strengthen this claim, we can compute the 95% confidence interval of the two groups for comparison.
+```{r 95%CI of two groups, echo=FALSE}
+# t-crit
+tcrit_female <- qt(0.975, n_female - 1) # tcrit for female
+tcrit_male <- qt(0.975, n_male - 1) # tcrit for male
+# 95% confidence interval 
+cat("The confidence interval of female weightlifters' age is (", x_bar_female-tcrit_female*se_female, ", ", x_bar_female+tcrit_female*se_female, ").", sep='')
+cat("The confidence interval of male weightlifters' age is (", x_bar_male-tcrit_male*se_male, ", ", x_bar_male+tcrit_male*se_male, ").", sep='')
+```
+We can conclude, on the basis of both the t-test and the Confidence Interval, that there is no difference between age of female and male weightlifters.
+
+### Research Question 2 : What is the relation between the body weight of weightlifters and the weight lifted?
+#### 1.Gender = Female:
+
+In fitting a linear model (i.e., the least-squares regression line) we must check several assumptions (occasionally called “conditions”) to determine if a linear model is reasonable:
+
+##### Check Assumption 1 (Scatter Plot) :
+```{r scatter plot gender - female, echo=FALSE}
+ggplot(female ,aes(x=female.bodyweight, y=female.weightlifted, color = ''))+geom_point(alpha = 1, color ='#98c1d9')+labs(title = 'The Relationship Between Bodyweight & Weightlifted Group (Gender = Female)', x = 'Body Weight', y = 'Weightlifted')+geom_smooth(method = lm, se = FALSE)
+
+```
+
+The graph indicates that there is a linear relationship between bodyweight and weightlifted variables.
+
+#####  Check Assumption 2 (Residuals Are From A Normal Distribution) :
+
+Before checking the residuals' distribution, I have to fit the linear model of relationship between two variables.
+
+```{r regression model gender - female, echo=FALSE}
+# fit the model
+model <- lm(female$female.weightlifted~female$female.bodyweight)
+# print model
+cat('Linear Model show relationship between bodyweight and weightlifted variables(Gender = Female) : \n weightlifted = ',model$coefficients[1],'*bodyweight + ',model$coefficients[2])
+
+```
+```{r residuals histogram gender - female, echo=FALSE}
+ggplot(data = female, aes(x = model$residuals)) +
+    geom_histogram(bins = 20,fill = 'steelblue', color = 'black') +
+    labs(title = 'Histogram of Residuals (Gender = Female)', x = 'Residuals', y = 'Frequency')
+```
+
+The graphs show that residuals is normally distributed.
+
+#####  Check Assumption 3: Residuals Have A Constant Standard Deviation
+```{r check residual gender - female, echo=FALSE}
+model_res = resid(model)
+plot(model_res, 
+     ylab="Residuals", xlab="Weightlifted", 
+     main="Check Assumption 3 (Gender = Female)") 
+abline(0, 0) 
+```
+This residuals plot give us no indication that the assumptions of model are false.
+
+#### Hypothesis Test (Gender = Female) :
+
+In this step, the hypothesis about the relation between bodyweight and weightlifted variables will be tested. The first hypothesis states that there is no relationship between two above-mentioned variables. The t statistic and the alpha (p-value) are the tools to assess the hypothesis and draw the conclusion. This is the result of the analysis.
+
+```{r hypothesis test gender - female, echo=FALSE}
+# print model
+
+cat('Linear Model (Gender = Female) : Weightlifted = ',model$coefficients[2],'*bodyweight + ',model$coefficients[1], '.\n The t-stat = ', summary(model)$coefficients[2,2], ' and the p-value = ',summary(model)$coefficients[2,4],' < 0.05.')
+
+
+```
+Base on the p-value, we can reject the first hypothesis and conclude that there is a statistically significant positive linear relationship between the body weight and the maximum weight the athlete can lift. For each extra kilogram in weight, the maximum weight the athlete can lift increase by 0.2916 kilogram, on average.
+
+
+#### 2.Gender = Male
+
+##### Check Assumption 1: Scatter Plot
+```{r scatter plot gender - male, echo=FALSE }
+ggplot(male ,aes(x=male.bodyweight, y=male.weightlifted, color = ''))+geom_point(alpha = 1, color ='#98c1d9')+labs(title = 'The Relationship Between Bodyweight & Weightlifted Group (Gender = Male)',x = 'Body Weight', y = 'Weightlifted')+geom_smooth(method = lm, se = FALSE)
+```
+Similarly, the graph for male gender show the linear relationship between two variables.
+
+#####  Check Assumption 2: Residuals Are From A Normal Distribution
+
+Before checking the residuals' distribution, I have to fit the linear model of relationship between two variables.
+```{r regression model 2 gender - male, echo=FALSE}
+# fit the model
+model2 <- lm(male$male.weightlifted~male$male.bodyweight)
+# print model
+cat('Linear Model show relationship between bodyweight and weightlifted variables(Gender = Male) : \n weightlifted = ',model2$coefficients[1],'*bodyweight + ',model2$coefficients[2])
+
+```
+```{r residuals histogram gender - male, echo=FALSE}
+ggplot(data = male, aes(x = model2$residuals)) +
+    geom_histogram(bins = 20,fill = 'steelblue', color = 'black') +
+    labs(title = 'Histogram of Residuals (Gender = Male)', x = 'Residuals', y = 'Frequency')
+```
+The distribution of residuals are normal distribution.
+
+#####  Check Assumption 3: Residuals Have A Constant Standard Deviation
+
+```{r check residual gender - male, echo=FALSE}
+model_res_2 = resid(model2)
+plot(model_res_2, 
+     ylab="Residuals", xlab="Weightlifted", 
+     main="Check Assumption 3 (Gender = Male)") 
+abline(0, 0) 
+```
+The residual plot indicates the residuals have a constant standard deviation.
+#### Hypothesis Test (Gender = Male):
+
+Similarly, in this step, for male athletes, the hypothesis about the relation between bodyweight and weightlifted variables will be tested. The first hypothesis states that there is no relationship between two above-mentioned variables. The t statistic and the alpha (p-value) are the tools to assess the hypothesis and draw the conclusion. This is the result of the analysis.
+
+```{r hypothesis test gender - male, echo=FALSE}
+# print model
+
+cat('Linear Model (Gender = Male) : Weightlifted = ',model2$coefficients[2],'*bodyweight + ',model2$coefficients[1], '.\n The t-stat = ', summary(model2)$coefficients[2,2], ' and the p-value = ',summary(model2)$coefficients[2,4],' < 0.05.')
+
+
+
+```
+## Conclusions and Further Discussion
+I quantified the impact of body weight and age and sex differences for weightlifters from the sample of 261 participants. The answer to the first question stated at the beginning of this study is that there is no difference between the age of female and male weightlifters. Besides that, there is a linear relationship between the body weight of the athletes and the maximum weight they can lift regardless the gender. Such results may help to establish progression trajectories for talented athletes and inform coaches, athletes, and national governing bodies.
