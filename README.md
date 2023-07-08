@@ -1,5 +1,5 @@
+<h1 align="center"> </a> Data Analysis in Olympic Weightlifting data using R <img src="https://www.r-project.org/logo/Rlogo.png" alt="python" width="55" height="40"/> </a> </h1>
 
-# Statistical Report
 ## 1. Abstract
 Olympic weightlifting requires technical skills, explosive power, strength, and coordination. Weightlifters can be competitive within a range of morphological characteristics due to competition body weight classes. To date, no studies have examined when sex and age differences arise in weightlifting and the impact of body weight on performances at different ages.
 
@@ -31,3 +31,10 @@ Besides that, there is a linear relationship between the body weight of the athl
   <img width="642" height="321" src="https://github.com/vinhphuphan/Olympic-Weightlifting-Data-Analysis/blob/main/images/relationship_female.png">
   <img width="642" height="321" src="https://github.com/vinhphuphan/Olympic-Weightlifting-Data-Analysis/blob/main/images/relationship_male.png">
 </p>
+
+## Related Projects:question: 👨‍💻 🛰️
+<code>[Titanic - Machine Learning from Disaster using Python](https://github.com/vinhphuphan/Titanic-Machine-Learning-from-Disaster)</code> 📊
+
+<code>[Living Species Image Classification using Python](https://github.com/vinhphuphan/ImageClassification)</code> 📊
+
+<code>[Text Classification With Movie Reviews](https://github.com/vinhphuphan/Text-Classification-With-Movie-Reviews/)</code> 📊
