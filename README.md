@@ -1,4 +1,4 @@
-<h1 align="center"> </a> Data Analysis in Olympic Weightlifting data using R <img src="https://www.r-project.org/logo/Rlogo.png" alt="python" width="55" height="40"/> </a> </h1>
+<h1 align="center"> </a> Data Analysis in Olympic Weightlifting data using <img src="https://www.r-project.org/logo/Rlogo.png" alt="python" width="55" height="40"/> </a> </h1>
 
 ## 1. Abstract
 Olympic weightlifting requires technical skills, explosive power, strength, and coordination. Weightlifters can be competitive within a range of morphological characteristics due to competition body weight classes. To date, no studies have examined when sex and age differences arise in weightlifting and the impact of body weight on performances at different ages.
